@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}{{ site_name }} · QR Code com limite de visitas{% endblock %}
+{% block content %}
+<section class="hero-card p-4 p-lg-5 rounded-5 mb-4">
+  <div class="row align-items-center g-4">
+    <div class="col-lg-7">
+      <span class="badge rounded-pill text-bg-light mb-3">MVP de QR Code por redirecionamento</span>
+      <h1 class="display-5 fw-bold mb-3">Hospede um QR Code. Venda visitas. Controle tudo.</h1>
+      <p class="lead text-muted mb-4">O usuário cria conta, escolhe um plano, cria um QR Code e cada leitura redireciona para o site/serviço configurado — respeitando limites diários e mensais definidos no admin.</p>
+      <div class="d-flex flex-wrap gap-2">
+        {% if current_user %}
+          <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg rounded-pill px-4">Abrir dashboard</a>
+        {% else %}
+          {% if signup_open %}<a href="{{ url_for('register') }}" class="btn btn-primary btn-lg rounded-pill px-4">Começar agora</a>{% endif %}
+          <a href="{{ url_for('login') }}" class="btn btn-outline-secondary btn-lg rounded-pill px-4">Entrar</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="qr-mock rounded-5 p-4 text-center bg-white shadow-sm">
+        <div class="fake-qr mx-auto mb-3"></div>
+        <h5 class="fw-bold">/q/meu-cardapio</h5>
+        <p class="text-muted mb-0">Escaneou → contou → redirecionou. Sem circo, sem malabarismo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="row g-3 mb-5">
+  <div class="col-md-4"><div class="soft-card p-4 h-100"><h5>Planos livres</h5><p class="text-muted mb-0">Crie Free, QR1, QR2, campanha, enterprise, o que quiser — com limite diário/mensal.</p></div></div>
+  <div class="col-md-4"><div class="soft-card p-4 h-100"><h5>Contagem real</h5><p class="text-muted mb-0">Cada acesso no link público do QR vira uma visita permitida ou bloqueada.</p></div></div>
+  <div class="col-md-4"><div class="soft-card p-4 h-100"><h5>Admin dashboard</h5><p class="text-muted mb-0">Gerencie usuários, planos, cadastros e histórico de visitas sem abrir o banco.</p></div></div>
+</div>
+
+<h2 class="h3 fw-bold mb-3">Planos disponíveis</h2>
+<div class="row g-3">
+  {% for plan in plans %}
+  <div class="col-md-4">
+    <div class="soft-card p-4 h-100 plan-card">
+      <div class="d-flex justify-content-between align-items-start gap-2">
+        <h4 class="fw-bold mb-1">{{ plan.name }}</h4>
+        <span class="badge rounded-pill text-bg-primary">{{ plan.price_label }}</span>
+      </div>
+      <p class="text-muted small mb-3">{{ plan.description }}</p>
+      <p class="mb-0"><strong>Limites:</strong><br>{{ plan.limit_text() }}</p>
+    </div>
+  </div>
+  {% else %}
+    <p class="text-muted">Nenhum plano público ativo ainda.</p>
+  {% endfor %}
+</div>
+{% endblock %}

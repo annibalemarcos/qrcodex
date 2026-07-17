@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Editar' if plan else 'Novo' }} plano · Admin{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="soft-card p-4 p-lg-5">
+      <h1 class="h3 fw-bold mb-1">{{ 'Editar plano' if plan else 'Novo plano' }}</h1>
+      <p class="text-muted mb-4">Campos de limite vazios significam ilimitado. Simples e bruto, como boleto vencendo.</p>
+      <form method="post">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Nome</label>
+            <input name="name" class="form-control rounded-4" value="{{ plan.name if plan else '' }}" placeholder="QR1" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Slug</label>
+            <input name="slug" class="form-control rounded-4" value="{{ plan.slug if plan else '' }}" placeholder="qr1">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Preço/rótulo</label>
+            <input name="price_label" class="form-control rounded-4" value="{{ plan.price_label if plan else '' }}" placeholder="R$ 19/mês">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">QR Codes máximos</label>
+            <input name="max_qrcodes" type="number" min="0" class="form-control rounded-4" value="{{ plan.max_qrcodes if plan and plan.max_qrcodes is not none else '' }}" placeholder="vazio = ilimitado">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Redirecionamentos por dia</label>
+            <input name="daily_limit" type="number" min="0" class="form-control rounded-4" value="{{ plan.daily_limit if plan and plan.daily_limit is not none else '' }}" placeholder="100">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Redirecionamentos por mês</label>
+            <input name="monthly_limit" type="number" min="0" class="form-control rounded-4" value="{{ plan.monthly_limit if plan and plan.monthly_limit is not none else '' }}" placeholder="3000">
+          </div>
+          <div class="col-12">
+            <label class="form-label">Descrição</label>
+            <textarea name="description" rows="3" class="form-control rounded-4">{{ plan.description if plan else '' }}</textarea>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="is_active" value="1" id="active" {% if not plan or plan.is_active %}checked{% endif %}><label class="form-check-label" for="active">Ativo</label></div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="is_public" value="1" id="public" {% if not plan or plan.is_public %}checked{% endif %}><label class="form-check-label" for="public">Público no cadastro</label></div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="is_default" value="1" id="default" {% if plan and plan.is_default %}checked{% endif %}><label class="form-check-label" for="default">Plano padrão</label></div>
+          </div>
+        </div>
+        <div class="d-flex gap-2 mt-4">
+          <button class="btn btn-primary rounded-pill px-4">Salvar plano</button>
+          <a href="{{ url_for('admin_plans') }}" class="btn btn-outline-secondary rounded-pill px-4">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

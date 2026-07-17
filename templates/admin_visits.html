@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Visitas · Admin{% endblock %}
+{% block content %}
+<div class="mb-4">
+  <h1 class="h2 fw-bold mb-1">Visitas</h1>
+  <p class="text-muted mb-0">Últimas 300 tentativas de redirecionamento: permitidas e bloqueadas.</p>
+</div>
+
+<div class="soft-card p-4">
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead><tr><th>Quando</th><th>QR</th><th>Dono</th><th>Status</th><th>Referrer</th><th>User Agent</th></tr></thead>
+      <tbody>
+      {% for visit in visits %}
+      <tr>
+        <td class="small">{{ visit.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+        <td>{{ visit.qrcode.title if visit.qrcode else '-' }}</td>
+        <td class="small">{{ visit.qrcode.user.email if visit.qrcode and visit.qrcode.user else '-' }}</td>
+        <td>{% if visit.allowed %}<span class="badge text-bg-success rounded-pill">Permitida</span>{% else %}<span class="badge text-bg-warning rounded-pill">Bloqueada</span>{% endif %}</td>
+        <td class="small text-truncate" style="max-width: 180px;">{{ visit.referrer or '-' }}</td>
+        <td class="small text-truncate" style="max-width: 260px;">{{ visit.user_agent or '-' }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6" class="text-muted text-center py-4">Sem visitas ainda.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

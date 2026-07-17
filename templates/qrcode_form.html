@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Editar' if qr else 'Novo' }} QR Code · {{ site_name }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="soft-card p-4 p-lg-5">
+      <h1 class="h3 fw-bold mb-1">{{ 'Editar QR Code' if qr else 'Novo QR Code' }}</h1>
+      <p class="text-muted mb-4">O QR aponta para um link QRCodex, conta a visita e só então redireciona para o destino.</p>
+      <form method="post">
+        <div class="mb-3">
+          <label class="form-label">Título</label>
+          <input name="title" class="form-control rounded-4" value="{{ qr.title if qr else '' }}" placeholder="Ex: Cardápio da pizzaria" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">URL de destino</label>
+          <input name="target_url" class="form-control rounded-4" value="{{ qr.target_url if qr else '' }}" placeholder="https://seusite.com.br" required>
+          <div class="form-text">Pode colar sem https também. Eu arrumo a gravata do link.</div>
+        </div>
+        {% if not qr %}
+        <div class="mb-3">
+          <label class="form-label">Slug personalizado <span class="text-muted small">opcional</span></label>
+          <input name="slug" class="form-control rounded-4" placeholder="cardapio-pizzaria">
+          <div class="form-text">Vai virar <code>/q/seu-slug</code>. Se deixar vazio, geramos um automaticamente.</div>
+        </div>
+        {% endif %}
+        <div class="mb-3">
+          <label class="form-label">Notas internas</label>
+          <textarea name="notes" class="form-control rounded-4" rows="3" placeholder="Campanha, cliente, observações...">{{ qr.notes if qr else '' }}</textarea>
+        </div>
+        {% if qr %}
+        <div class="form-check form-switch mb-3">
+          <input class="form-check-input" type="checkbox" name="is_active" value="1" id="isActive" {% if qr.is_active %}checked{% endif %}>
+          <label class="form-check-label" for="isActive">QR Code ativo</label>
+        </div>
+        {% endif %}
+        <div class="d-flex flex-wrap gap-2">
+          <button class="btn btn-primary rounded-pill px-4">Salvar</button>
+          <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary rounded-pill px-4">Cancelar</a>
+          {% if qr %}
+          <button type="button" class="btn btn-outline-danger rounded-pill px-4 ms-auto" data-bs-toggle="modal" data-bs-target="#deleteModal">Apagar</button>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% if qr %}
+<div class="modal fade" id="deleteModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-5 border-0">
+      <div class="modal-header border-0">
+        <h5 class="modal-title fw-bold">Apagar QR Code?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-muted">Isso apaga também o histórico de visitas desse QR. Sem dó e sem Ctrl+Z.</div>
+      <div class="modal-footer border-0">
+        <button class="btn btn-light rounded-pill" data-bs-dismiss="modal">Cancelar</button>
+        <form method="post" action="{{ url_for('qrcode_delete', qr_id=qr.id) }}">
+          <button class="btn btn-danger rounded-pill">Apagar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

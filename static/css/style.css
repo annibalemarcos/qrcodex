@@ -1,0 +1,88 @@
+:root {
+  --bg: #f5f7fb;
+  --ink: #1f2937;
+  --muted: #6b7280;
+  --brand: #5b7cfa;
+  --brand-2: #8bd3dd;
+  --card: rgba(255, 255, 255, .86);
+  --line: rgba(31, 41, 55, .08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(139, 211, 221, .34), transparent 34rem),
+    radial-gradient(circle at top right, rgba(91, 124, 250, .16), transparent 28rem),
+    var(--bg);
+}
+
+.soft-nav { backdrop-filter: blur(16px); }
+.brand { color: var(--brand) !important; letter-spacing: -.02em; }
+
+.hero-card,
+.soft-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: 0 18px 50px rgba(31, 41, 55, .08);
+}
+
+.hero-card {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.92), rgba(235,250,255,.86)),
+    var(--card);
+}
+
+.rounded-4 { border-radius: 1.1rem !important; }
+.rounded-5 { border-radius: 1.6rem !important; }
+
+.btn-primary {
+  --bs-btn-bg: var(--brand);
+  --bs-btn-border-color: var(--brand);
+  --bs-btn-hover-bg: #4968e8;
+  --bs-btn-hover-border-color: #4968e8;
+}
+
+.form-control,
+.form-select {
+  border-color: rgba(31, 41, 55, .13);
+  padding: .72rem .9rem;
+}
+.form-control:focus,
+.form-select:focus {
+  border-color: rgba(91,124,250,.65);
+  box-shadow: 0 0 0 .25rem rgba(91,124,250,.13);
+}
+
+.qr-thumb { width: 132px; height: 132px; object-fit: contain; border: 1px solid var(--line); }
+.metric-mini { background: rgba(91,124,250,.07); color: #334155; }
+.muted-link { color: var(--muted); text-decoration: none; word-break: break-all; }
+.muted-link:hover { color: var(--brand); }
+.empty-icon { font-size: 3rem; line-height: 1; }
+
+.fake-qr {
+  width: 220px;
+  height: 220px;
+  border-radius: 1.3rem;
+  background:
+    linear-gradient(90deg, #111 10px, transparent 10px) 0 0 / 28px 28px,
+    linear-gradient(#111 10px, transparent 10px) 0 0 / 28px 28px,
+    #fff;
+  border: 14px solid #fff;
+  box-shadow: inset 0 0 0 12px rgba(91,124,250,.08), 0 10px 32px rgba(31,41,55,.12);
+}
+
+.plan-card { transition: transform .15s ease, box-shadow .15s ease; }
+.plan-card:hover { transform: translateY(-2px); box-shadow: 0 22px 55px rgba(31, 41, 55, .11); }
+
+.table > :not(caption) > * > * { background: transparent; }
+.flash-stack { position: relative; z-index: 2; }
+
+code {
+  color: #475569;
+  background: rgba(91,124,250,.08);
+  padding: .12rem .34rem;
+  border-radius: .45rem;
+}

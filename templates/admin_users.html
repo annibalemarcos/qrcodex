@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Usuários · Admin{% endblock %}
+{% block content %}
+<div class="mb-4">
+  <h1 class="h2 fw-bold mb-1">Usuários</h1>
+  <p class="text-muted mb-0">Troque plano, desative conta e defina admins. Aqui mora o controle de acesso.</p>
+</div>
+
+<div class="soft-card p-4">
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead><tr><th>Usuário</th><th>Plano</th><th>Status</th><th>Admin</th><th></th></tr></thead>
+      <tbody>
+      {% for user in users %}
+      <tr>
+        <form method="post" action="{{ url_for('admin_user_update', user_id=user.id) }}">
+          <td style="min-width: 230px;">
+            <input name="name" class="form-control form-control-sm rounded-4 mb-1" value="{{ user.name }}">
+            <div class="small text-muted">{{ user.email }}</div>
+          </td>
+          <td style="min-width: 220px;">
+            <select name="plan_id" class="form-select form-select-sm rounded-4">
+              {% for plan in plans %}
+              <option value="{{ plan.id }}" {% if user.plan_id == plan.id %}selected{% endif %}>{{ plan.name }} · {{ plan.price_label }}</option>
+              {% endfor %}
+            </select>
+          </td>
+          <td><div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="is_active" value="1" {% if user.is_active %}checked{% endif %}></div></td>
+          <td><div class="form-check form-switch"><input class="form-check-input" type="checkbox" name="is_admin" value="1" {% if user.is_admin %}checked{% endif %}></div></td>
+          <td class="text-end"><button class="btn btn-sm btn-primary rounded-pill">Salvar</button></td>
+        </form>
+      </tr>
+      {% else %}
+      <tr><td colspan="5" class="text-muted text-center py-4">Nenhum usuário.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

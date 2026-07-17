@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Configurações · Admin{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <div class="soft-card p-4 p-lg-5">
+      <h1 class="h3 fw-bold mb-1">Configurações</h1>
+      <p class="text-muted mb-4">Coisas globais do app. O tipo de botão que parece pequeno até salvar seu pescoço.</p>
+      <form method="post">
+        <div class="mb-3">
+          <label class="form-label">Nome do site</label>
+          <input name="site_name" class="form-control rounded-4" value="{{ site_name }}">
+        </div>
+        <div class="form-check form-switch mb-4">
+          <input class="form-check-input" type="checkbox" name="signup_open" value="1" id="signupOpen" {% if signup_open %}checked{% endif %}>
+          <label class="form-check-label" for="signupOpen">Permitir novos cadastros</label>
+        </div>
+        <button class="btn btn-primary rounded-pill px-4">Salvar configurações</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

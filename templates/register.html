@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Criar conta · {{ site_name }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="soft-card p-4 p-lg-5">
+      <h1 class="h3 fw-bold mb-1">Criar conta</h1>
+      <p class="text-muted mb-4">Escolha um plano inicial. Depois o admin pode trocar tudo — liberdade total, igual gambiarra boa, só que organizada.</p>
+      <form method="post">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Nome</label>
+            <input name="name" class="form-control rounded-4" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">E-mail</label>
+            <input name="email" type="email" class="form-control rounded-4" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Senha</label>
+            <input name="password" type="password" minlength="6" class="form-control rounded-4" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Plano</label>
+            <select name="plan_id" class="form-select rounded-4">
+              {% for plan in plans %}
+              <option value="{{ plan.id }}" {% if plan.is_default %}selected{% endif %}>{{ plan.name }} · {{ plan.price_label }} · {{ plan.limit_text() }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-primary rounded-pill px-4 py-2 mt-4">Criar conta</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

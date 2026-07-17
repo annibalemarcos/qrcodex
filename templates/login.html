@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Entrar · {{ site_name }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-5">
+    <div class="soft-card p-4 p-lg-5">
+      <h1 class="h3 fw-bold mb-1">Entrar</h1>
+      <p class="text-muted mb-4">Volte para o painel e veja seus QR Codes fazendo o corre deles.</p>
+      <form method="post">
+        <div class="mb-3">
+          <label class="form-label">E-mail</label>
+          <input name="email" type="email" class="form-control rounded-4" required autofocus>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Senha</label>
+          <input name="password" type="password" class="form-control rounded-4" required>
+        </div>
+        <button class="btn btn-primary w-100 rounded-pill py-2">Entrar</button>
+      </form>
+      <div class="mt-4 small text-muted">
+        Admin inicial: <code>admin@qrcodex.local</code> / <code>000000</code><br>
+        Troque no <code>.env</code> para produção.
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

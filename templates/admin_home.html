@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Admin · {{ site_name }}{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+  <div>
+    <h1 class="h2 fw-bold mb-1">Admin dashboard</h1>
+    <p class="text-muted mb-0">O cockpit do foguete. Sem botão vermelho desnecessário — por enquanto.</p>
+  </div>
+  <div class="d-flex gap-2">
+    <a href="{{ url_for('admin_plan_form') }}" class="btn btn-primary rounded-pill px-4">+ Plano</a>
+    <a href="{{ url_for('admin_settings') }}" class="btn btn-outline-secondary rounded-pill px-4">Configurações</a>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-md-3"><div class="soft-card p-4"><div class="text-muted small">Usuários</div><h2 class="fw-bold mb-0">{{ total_users }}</h2></div></div>
+  <div class="col-md-3"><div class="soft-card p-4"><div class="text-muted small">QR Codes</div><h2 class="fw-bold mb-0">{{ total_qrs }}</h2></div></div>
+  <div class="col-md-3"><div class="soft-card p-4"><div class="text-muted small">Redirecionamentos</div><h2 class="fw-bold mb-0">{{ total_visits }}</h2></div></div>
+  <div class="col-md-3"><div class="soft-card p-4"><div class="text-muted small">Bloqueados</div><h2 class="fw-bold mb-0">{{ blocked_visits }}</h2></div></div>
+</div>
+
+<div class="soft-card p-4">
+  <h5 class="fw-bold mb-3">Últimas visitas</h5>
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead><tr><th>Quando</th><th>QR</th><th>Usuário</th><th>Status</th></tr></thead>
+      <tbody>
+      {% for visit in last_visits %}
+      <tr>
+        <td class="small">{{ visit.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+        <td>{{ visit.qrcode.title if visit.qrcode else '-' }}</td>
+        <td>{{ visit.qrcode.user.email if visit.qrcode and visit.qrcode.user else '-' }}</td>
+        <td>{% if visit.allowed %}<span class="badge rounded-pill text-bg-success">Permitida</span>{% else %}<span class="badge rounded-pill text-bg-warning">Bloqueada</span>{% endif %}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4" class="text-muted text-center py-4">Sem visitas ainda.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

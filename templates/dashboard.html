@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · {{ site_name }}{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+  <div>
+    <h1 class="h2 fw-bold mb-1">Dashboard</h1>
+    <p class="text-muted mb-0">Plano atual: <strong>{{ current_user.plan.name if current_user.plan else 'Sem plano' }}</strong> · {{ current_user.plan.limit_text() if current_user.plan else '' }}</p>
+  </div>
+  <a href="{{ url_for('qrcode_new') }}" class="btn btn-primary rounded-pill px-4">+ Novo QR Code</a>
+</div>
+
+{% if qrs %}
+<div class="row g-3">
+  {% for qr in qrs %}
+  <div class="col-lg-6">
+    <div class="soft-card p-4 h-100">
+      <div class="row g-3 align-items-center">
+        <div class="col-auto">
+          <img src="{{ url_for('qr_image', slug=qr.slug) }}" class="qr-thumb rounded-4 bg-white p-2" alt="QR Code">
+        </div>
+        <div class="col">
+          <div class="d-flex justify-content-between align-items-start gap-2">
+            <div>
+              <h5 class="fw-bold mb-1">{{ qr.title }}</h5>
+              <a class="small muted-link" href="{{ url_for('redirect_qr', slug=qr.slug, _external=True) }}" target="_blank">{{ url_for('redirect_qr', slug=qr.slug, _external=True) }}</a>
+            </div>
+            <span class="badge rounded-pill {% if qr.is_active %}text-bg-success{% else %}text-bg-secondary{% endif %}">{{ 'Ativo' if qr.is_active else 'Pausado' }}</span>
+          </div>
+          <p class="small text-muted mt-2 mb-2 text-truncate">Destino: {{ qr.target_url }}</p>
+          <div class="row text-center g-2 small mb-3">
+            <div class="col"><div class="metric-mini rounded-4 p-2"><strong>{{ usage[qr.id].today }}</strong><br>hoje</div></div>
+            <div class="col"><div class="metric-mini rounded-4 p-2"><strong>{{ usage[qr.id].month }}</strong><br>mês</div></div>
+            <div class="col"><div class="metric-mini rounded-4 p-2"><strong>{{ usage[qr.id].total }}</strong><br>total</div></div>
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <a href="{{ url_for('qrcode_detail', qr_id=qr.id) }}" class="btn btn-sm btn-outline-primary rounded-pill">Detalhes</a>
+            <a href="{{ url_for('qrcode_edit', qr_id=qr.id) }}" class="btn btn-sm btn-outline-secondary rounded-pill">Editar</a>
+            <a href="{{ url_for('qr_image', slug=qr.slug) }}" class="btn btn-sm btn-outline-secondary rounded-pill" download>Baixar PNG</a>
+            <button class="btn btn-sm btn-light rounded-pill" data-copy="{{ url_for('redirect_qr', slug=qr.slug, _external=True) }}">Copiar link</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<div class="soft-card p-5 text-center">
+  <div class="empty-icon mb-3">▦</div>
+  <h3 class="fw-bold">Nenhum QR Code ainda</h3>
+  <p class="text-muted">Crie o primeiro. O império começa com um quadradinho estranho.</p>
+  <a href="{{ url_for('qrcode_new') }}" class="btn btn-primary rounded-pill px-4">Criar QR Code</a>
+</div>
+{% endif %}
+{% endblock %}
